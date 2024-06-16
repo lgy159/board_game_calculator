@@ -23,7 +23,7 @@ migrate_working_dir/
 #.vscode/
 
 #assets 폴더 무조건 git add
-!assets/
+!assets1/
 
 # Flutter/Dart/Pub related
 **/doc/api/
