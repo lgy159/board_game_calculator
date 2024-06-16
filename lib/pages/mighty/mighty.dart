@@ -1,11 +1,27 @@
+import 'package:board_game_calculator/pages/mighty/player_list.dart';
+import 'package:board_game_calculator/pages/mighty/select_pattern.dart';
+import 'package:board_game_calculator/pages/mighty/title_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Mighty extends StatelessWidget {
+class Mighty extends StatefulWidget {
   const Mighty({super.key});
 
   @override
+  State<Mighty> createState() => _MightyState();
+}
+
+class _MightyState extends State<Mighty> {
+  @override
   Widget build(BuildContext context) {
+    List<String> playerList = [
+      'PlayerA',
+      'PlayerB',
+      'PlayerC',
+      'PlayerD',
+      'PlayerE'
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text('마이티 카운터'),
@@ -27,92 +43,71 @@ class Mighty extends StatelessWidget {
           )
         ],
       ),
-      body: CounterPage(),
-    );
-  }
-}
-
-
-class CounterPage extends StatelessWidget {
-  const CounterPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        titleBox(title: 'Player'),
-        playerList(),
-        titleBox(title: 'History'),
-        history(),
-        titleBox(title: '문양 설정'),
-        selectPattern(),
-        titleBox(title: '주공 설정'),
-        Row(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              height: 48,
-              width: 72,
-              child: Text('주공'),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const TitleBox(title: 'Player'),
+          PlayerList(playerList),
+          const TitleBox(title: 'History'),
+          history(),
+          const TitleBox(title: '문양 설정'),
+          const SelectPattern(),
+          const TitleBox(title: '주공 설정'),
+          const TitleBox(title: '프렌즈 설정'),
+          Container(
+            color: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '목표 점수',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(8, (index) {
+                    return Container(
+                      width: 30,
+                      height: 30,
+                      color: Colors.grey,
+                      child: Center(child: Text('${13 + index}')),
+                    );
+                  }),
+                ),
+              ],
             ),
-            playerList()
-          ],
-        ),
-        titleBox(title: '프렌즈 설정'),
-        Container(
-          color: Colors.black,
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          SizedBox(height: 16.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                '목표 점수',
-                style: TextStyle(color: Colors.white),
+              Text('여당이 얻은 점수'),
+              SizedBox(width: 16.0),
+              Container(
+                width: 50,
+                height: 30,
+                color: Colors.grey,
+                child: Center(child: Text('16')),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(8, (index) {
-                  return Container(
-                    width: 30,
-                    height: 30,
-                    color: Colors.grey,
-                    child: Center(child: Text('${13 + index}')),
-                  );
-                }),
+              SizedBox(width: 16.0),
+              IconButton(
+                icon: Icon(Icons.remove),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {},
               ),
             ],
           ),
-        ),
-        SizedBox(height: 16.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('여당이 얻은 점수'),
-            SizedBox(width: 16.0),
-            Container(
-              width: 50,
-              height: 30,
-              color: Colors.grey,
-              child: Center(child: Text('16')),
-            ),
-            SizedBox(width: 16.0),
-            IconButton(
-              icon: Icon(Icons.remove),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        SizedBox(height: 16.0),
-        ElevatedButton(
-          onPressed: () {},
-          child: Text('SAVE'),
-        ),
-      ],
+          SizedBox(height: 16.0),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text('SAVE'),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -123,9 +118,9 @@ Widget playerList() {
       child: Container(
         decoration: const BoxDecoration(
             border: Border(
-              left: BorderSide(color: Colors.black, width: 0.5),
-              right: BorderSide(color: Colors.black, width: 0.5),
-            )),
+          left: BorderSide(color: Colors.black, width: 0.5),
+          right: BorderSide(color: Colors.black, width: 0.5),
+        )),
         alignment: Alignment.center,
         height: 48,
         child: Text('A'),
@@ -137,18 +132,6 @@ Widget playerList() {
 
   return Row(
     children: playerList,
-  );
-}
-
-Widget titleBox({required String title}) {
-  return Container(
-    height: 20.0,
-    color: Colors.black,
-    child: Center(
-        child: Text(
-          title,
-          style: TextStyle(color: Colors.white),
-        )),
   );
 }
 
@@ -181,32 +164,5 @@ Widget history() {
         return item;
       }).toList(),
     ),
-  );
-}
-
-Widget selectPattern() {
-  Widget pattern(String pattern) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      alignment: Alignment.center,
-      height: 60,
-      width: 60,
-      color: Colors.white,
-      child: InkWell(
-        onTap: () {},
-        child: Text(pattern, style: TextStyle(fontSize: 40)),
-      ),
-    );
-  }
-
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      pattern('\u2660'),
-      pattern('\u2666'),
-      pattern('\u2665'),
-      pattern('\u2663'),
-      pattern('\u2716'),
-    ],
   );
 }
