@@ -39,6 +39,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: navigatorKey,
       onGenerateRoute: RouteGenerator.generateRoute,
       theme: ThemeData(
+        fontFamily: 'GalmuriMono11',
           // primarySwatch: Colors.blue, //앱 기본 테마
           // textTheme: AppTheme.textTheme, //앱 텍스트 테마 설정
           // platform: TargetPlatform.iOS, // 플랫폼을 ios 스타일로 설정

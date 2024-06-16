@@ -6,14 +6,19 @@ import 'package:flutter/material.dart';
   dropshadow Button
 */
 
-
 class DSButtonSimple extends StatelessWidget {
   final String pageName;
   final String urlName;
   final String color;
+  late String? imageUrl;
 
-  const DSButtonSimple({super.key, required this.pageName, required this.urlName,this.color = '#E7E6E1'});
-
+  DSButtonSimple({
+    super.key,
+    required this.pageName,
+    required this.urlName,
+    this.color = '#E7E6E1',
+    this.imageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +40,39 @@ class DSButtonSimple extends StatelessWidget {
             ],
             color: FlutterColor(color),
           ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(width: 60.0,),
+                  imageUrl != null
+                      ? Image.asset(
+                          imageUrl!,
+                          width: 45,
+                          height: 45,
+                        )
+                      : SizedBox(),
+                  SizedBox(
+                    width: 15.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      pageName,
+                      style: TextStyle(fontSize: 32),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
 
           // margin: EdgeInsets.symmetric(horizontal: 30),
         ),
-        onTap: (){
-
-        },
+        onTap: () {},
       ),
     );
   }
