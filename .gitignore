@@ -22,6 +22,9 @@ migrate_working_dir/
 # is commented out by default.
 #.vscode/
 
+#assets 폴더 무조건 git add
+!assets/
+
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
