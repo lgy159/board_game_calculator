@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
                   children: [
                     DSButtonSimple(
                         pageName: 'SkullKing',
-                        urlName: '/skull_King',
+                        urlName: '/skull_king',
                         imageUrl:'assets/images/i_skullking.png'),
                     SizedBox(height: 40.0,),
                     DSButtonSimple(

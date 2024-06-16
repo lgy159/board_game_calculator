@@ -10,6 +10,7 @@ class DSButtonSimple extends StatelessWidget {
   final String pageName;
   final String urlName;
   final String color;
+
   late String? imageUrl;
 
   DSButtonSimple({
@@ -69,10 +70,10 @@ class DSButtonSimple extends StatelessWidget {
               ),
             ],
           ),
-
-          // margin: EdgeInsets.symmetric(horizontal: 30),
         ),
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context,urlName);
+        },
       ),
     );
   }

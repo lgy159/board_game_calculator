@@ -1,5 +1,5 @@
-import 'package:board_game_calculator/pages/mighty/mighty.dart';
-import 'package:board_game_calculator/pages/skull_king/skull_king.dart';
+import '/pages/mighty/mighty.dart';
+import '/pages/skull_king/skull_king.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';

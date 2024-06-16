@@ -10,6 +10,8 @@ class SkullKing extends StatefulWidget {
 class _SkullKingState extends State<SkullKing> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Container(
+      child: Text('fnklsnejknesfjk'),
+    );
   }
 }
