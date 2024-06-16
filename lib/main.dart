@@ -33,8 +33,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    Logger().i('ge');
-
     return MaterialApp(
       title: 'BoardGameCalculator',
       debugShowCheckedModeBanner: false,
@@ -46,7 +44,6 @@ class _MyAppState extends State<MyApp> {
           // platform: TargetPlatform.iOS, // 플랫폼을 ios 스타일로 설정
           ),
       initialRoute: '/',
-      home: Home(),
     );
   }
 }
