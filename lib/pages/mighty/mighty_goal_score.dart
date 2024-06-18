@@ -1,34 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PlayerList extends StatefulWidget {
-  final List<String> playerList;
-  final Widget Function(int) callBackWidget;
+class GoalScore extends StatefulWidget {
+  final int selectIndex;
 
-  const PlayerList({
-    required this.playerList,
-    required this.callBackWidget,
-    super.key,
-  });
+  const GoalScore({required this.selectIndex, super.key});
 
   @override
-  State<PlayerList> createState() => _PlayerListState();
+  State<GoalScore> createState() => _GoalScoreState();
 }
 
-class _PlayerListState extends State<PlayerList> {
-  late List<String> playerList;
-  late Widget Function(int) callBackWidget;
+class _GoalScoreState extends State<GoalScore> {
   late int selectedIndex;
 
   @override
   void initState() {
     super.initState();
-    playerList = widget.playerList;
-    callBackWidget = widget.callBackWidget;
-    selectedIndex = (callBackWidget(0) is TextField) ? -1 : 0;
+    selectedIndex = widget.selectIndex;
   }
 
-  Widget player(int index) {
+  Widget score(int index) {
     return Expanded(
       child: InkWell(
         child: Container(
@@ -37,13 +28,13 @@ class _PlayerListState extends State<PlayerList> {
               border: const Border(
                 left: BorderSide(color: Colors.black, width: 0.5),
                 right: BorderSide(color: Colors.black, width: 0.5),
+                bottom: BorderSide(color: Colors.black, width: 1),
               )),
           alignment: Alignment.center,
-          height: 48,
-          child: callBackWidget(index),
+          height: 45,
+          child: Text('${index + 13}'),
         ),
         onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
           setState(() {
             selectedIndex = index;
           });
@@ -55,10 +46,10 @@ class _PlayerListState extends State<PlayerList> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: playerList
+      children: List.generate(8, (index) => 13 + index)
           .asMap()
           .entries
-          .map((entry) => player(entry.key)) // 인덱스를 함께 전달
+          .map((entry) => score(entry.key))
           .toList(),
     );
   }
