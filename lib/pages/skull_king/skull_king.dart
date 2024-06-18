@@ -11,7 +11,7 @@ class _SkullKingState extends State<SkullKing> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('fnklsnejknesfjk'),
+      child: Text(''),
     );
   }
 }
