@@ -1,11 +1,51 @@
+import 'package:board_game_calculator/pages/mighty/mighty_get_score.dart';
+import 'package:board_game_calculator/pages/mighty/mighty_goal_score.dart';
+import 'package:board_game_calculator/pages/mighty/player_list.dart';
+import 'package:board_game_calculator/pages/mighty/mighty_select_pattern.dart';
+import 'package:board_game_calculator/pages/mighty/mighty_title_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
-class Mighty extends StatelessWidget {
+class Mighty extends StatefulWidget {
   const Mighty({super.key});
 
   @override
+  State<Mighty> createState() => _MightyState();
+}
+
+class _MightyState extends State<Mighty> {
+  @override
   Widget build(BuildContext context) {
+    List<String> playerList = [
+      'PlayerA',
+      'PlayerB',
+      'PlayerC',
+      'PlayerD',
+      'PlayerE'
+    ];
+
+    int mainPlayerIndex = 0;
+    int freindPlayerIndex = 0;
+    int goalScoreIndex = 0;
+    int score = 13;
+    bool isNoPattern = false;
+
+    // 티츄비 룰
+    int calculate() {
+      final goal = goalScoreIndex + 13;
+      late int standard;
+      if (goal >= score) {
+        // 여당 승리 = 공약 + 여당 점수 - (기본 공약(13 - 1 * 2)
+        standard = goal + score - 12 * 2;
+      } else {
+        // 야당 승리 = 공약 - 여당점수
+        standard = goal - score;
+      }
+
+      return standard;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('마이티 카운터'),
@@ -27,129 +67,69 @@ class Mighty extends StatelessWidget {
           )
         ],
       ),
-      body: CounterPage(),
-    );
-  }
-}
-
-
-class CounterPage extends StatelessWidget {
-  const CounterPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        titleBox(title: 'Player'),
-        playerList(),
-        titleBox(title: 'History'),
-        history(),
-        titleBox(title: '문양 설정'),
-        selectPattern(),
-        titleBox(title: '주공 설정'),
-        Row(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              height: 48,
-              width: 72,
-              child: Text('주공'),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const TitleBox(title: 'Player'),
+          PlayerList(
+            playerList: playerList,
+            callBackWidget: (int index) => TextField(
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                hintText: playerList[index],
+              ),
+              onChanged: (text) {
+                setState(() {
+                  playerList[index] = text;
+                });
+              },
             ),
-            playerList()
-          ],
-        ),
-        titleBox(title: '프렌즈 설정'),
-        Container(
-          color: Colors.black,
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '목표 점수',
-                style: TextStyle(color: Colors.white),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(8, (index) {
-                  return Container(
-                    width: 30,
-                    height: 30,
-                    color: Colors.grey,
-                    child: Center(child: Text('${13 + index}')),
-                  );
-                }),
-              ),
-            ],
           ),
-        ),
-        SizedBox(height: 16.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('여당이 얻은 점수'),
-            SizedBox(width: 16.0),
-            Container(
-              width: 50,
-              height: 30,
-              color: Colors.grey,
-              child: Center(child: Text('16')),
-            ),
-            SizedBox(width: 16.0),
-            IconButton(
-              icon: Icon(Icons.remove),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        SizedBox(height: 16.0),
-        ElevatedButton(
-          onPressed: () {},
-          child: Text('SAVE'),
-        ),
-      ],
-    );
-  }
-}
+          const TitleBox(title: 'History'),
+          history(),
 
-Widget playerList() {
-  Widget player() {
-    return Expanded(
-      child: Container(
-        decoration: const BoxDecoration(
-            border: Border(
-              left: BorderSide(color: Colors.black, width: 0.5),
-              right: BorderSide(color: Colors.black, width: 0.5),
-            )),
-        alignment: Alignment.center,
-        height: 48,
-        child: Text('A'),
+          const TitleBox(title: '주공 설정'),
+          PlayerList(
+            playerList: playerList,
+            callBackWidget: (int index) {
+              mainPlayerIndex = index;
+              return Text(playerList[index]);
+            } ,
+          ),
+
+          const TitleBox(title: '프렌즈 설정'),
+          PlayerList(
+            playerList: playerList,
+            callBackWidget: (int index) {
+              freindPlayerIndex = index;
+              return Text(playerList[index]);
+            } ,
+          ),
+
+          const TitleBox(title: '문양 설정'),
+          SelectPattern(
+            isNoPattern: (result) {
+              isNoPattern = result;
+            }
+          ),
+
+          const TitleBox(title: '목표 점수'),
+          GoalScore(selectIndex: goalScoreIndex),
+
+          const TitleBox(title: '얻은 점수'),
+          GetScore(getScore: score),
+
+          ElevatedButton(
+            onPressed: () {
+              // historyList.add(history)
+              // A가 가지고 있는 점수 +
+            },
+            child: Text('SAVE'),
+          ),
+        ],
       ),
     );
   }
-
-  List<Widget> playerList = [player(), player(), player(), player(), player()];
-
-  return Row(
-    children: playerList,
-  );
-}
-
-Widget titleBox({required String title}) {
-  return Container(
-    height: 20.0,
-    color: Colors.black,
-    child: Center(
-        child: Text(
-          title,
-          style: TextStyle(color: Colors.white),
-        )),
-  );
 }
 
 List<Widget> historyList = [defaultHistory, defaultHistory, defaultHistory];
@@ -181,32 +161,5 @@ Widget history() {
         return item;
       }).toList(),
     ),
-  );
-}
-
-Widget selectPattern() {
-  Widget pattern(String pattern) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      alignment: Alignment.center,
-      height: 60,
-      width: 60,
-      color: Colors.white,
-      child: InkWell(
-        onTap: () {},
-        child: Text(pattern, style: TextStyle(fontSize: 40)),
-      ),
-    );
-  }
-
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      pattern('\u2660'),
-      pattern('\u2666'),
-      pattern('\u2665'),
-      pattern('\u2663'),
-      pattern('\u2716'),
-    ],
   );
 }
