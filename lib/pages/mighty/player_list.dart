@@ -1,13 +1,17 @@
+import 'package:board_game_calculator/pages/mighty/mighty.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class PlayerList extends StatefulWidget {
   final List<String> playerList;
   final Widget Function(int) callBackWidget;
+  final Function(int) callBack;
 
   const PlayerList({
     required this.playerList,
     required this.callBackWidget,
+    required this.callBack,
     super.key,
   });
 
@@ -19,12 +23,14 @@ class _PlayerListState extends State<PlayerList> {
   late List<String> playerList;
   late Widget Function(int) callBackWidget;
   late int selectedIndex;
+  late Function(int) callBack;
 
   @override
   void initState() {
     super.initState();
     playerList = widget.playerList;
     callBackWidget = widget.callBackWidget;
+    callBack = widget.callBack;
     selectedIndex = (callBackWidget(0) is TextField) ? -1 : 0;
   }
 
@@ -46,6 +52,7 @@ class _PlayerListState extends State<PlayerList> {
           FocusManager.instance.primaryFocus?.unfocus();
           setState(() {
             selectedIndex = index;
+            callBack(index);
           });
         },
       ),
@@ -55,11 +62,8 @@ class _PlayerListState extends State<PlayerList> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: playerList
-          .asMap()
-          .entries
-          .map((entry) => player(entry.key)) // 인덱스를 함께 전달
-          .toList(),
+      children:
+          playerList.asMap().entries.map((entry) => player(entry.key)).toList(),
     );
   }
 }

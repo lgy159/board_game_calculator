@@ -2,21 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GoalScore extends StatefulWidget {
-  final int selectIndex;
+  final Function(int) callBack;
 
-  const GoalScore({required this.selectIndex, super.key});
+  const GoalScore({required this.callBack, super.key});
 
   @override
   State<GoalScore> createState() => _GoalScoreState();
 }
 
 class _GoalScoreState extends State<GoalScore> {
+  late Function(int) callBack;
   late int selectedIndex;
 
   @override
   void initState() {
     super.initState();
-    selectedIndex = widget.selectIndex;
+    callBack = widget.callBack;
+    selectedIndex = 0;
   }
 
   Widget score(int index) {
@@ -37,6 +39,7 @@ class _GoalScoreState extends State<GoalScore> {
         onTap: () {
           setState(() {
             selectedIndex = index;
+            callBack(index);
           });
         },
       ),

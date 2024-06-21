@@ -2,21 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GetScore extends StatefulWidget {
-  final int getScore;
+  final Function(int) callBack;
 
-  const GetScore({required this.getScore, super.key});
+  const GetScore({required this.callBack, super.key});
 
   @override
   State<GetScore> createState() => _GetScoreState();
 }
 
 class _GetScoreState extends State<GetScore> {
-  late int getScore;
+  int getScore = 13;
+  late Function(int) callBack;
 
   @override
   void initState() {
     super.initState();
-    getScore = widget.getScore;
+    callBack = widget.callBack;
   }
 
   @override
@@ -31,19 +32,22 @@ class _GetScoreState extends State<GetScore> {
           height: 30,
           child: Center(
               child: Text(
-            '$getScore',
-            style: const TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-            ),
-          )),
+                '$getScore',
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
         ),
         const SizedBox(width: 16.0),
         IconButton(
           icon: const Icon(Icons.remove),
           onPressed: () {
             setState(() {
-              if (getScore > 0) getScore -= 1;
+              if (getScore > 0) {
+                getScore -= 1;
+                callBack(getScore);
+              }
             });
           },
         ),
@@ -51,7 +55,10 @@ class _GetScoreState extends State<GetScore> {
           icon: const Icon(Icons.add),
           onPressed: () {
             setState(() {
-              if (getScore < 20) getScore += 1;
+              if (getScore < 20) {
+                getScore += 1;
+                callBack(getScore);
+              }
             });
           },
         ),
